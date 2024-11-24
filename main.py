@@ -6,7 +6,8 @@ class Table:
         for i in range(attributs):
             elt = input("Nom de l'attribut n°", i+1)
             self.attributs.append(elt)
-        # ...
+        self.nb_entree = 0
+        self.entrees = []
 
 
     def ajouter(self, attribut): # ajoute un attribut à la fin de la table
@@ -58,5 +59,8 @@ def interface():
 """
 
     to do list :
+    - Fix table.ajouter et table.retirer
+    - faire Input_to_SQL
+    - faire Interface
 """
 
