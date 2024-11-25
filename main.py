@@ -4,10 +4,10 @@ class Table:
         self.nom = nom
         self.attributs = []
         for i in range(attributs):
-            elt = input("Nom de l'attribut n°", i+1)
+            elt = input(f"Nom de l'attribut n°{i+1}")
             self.attributs.append(elt)
         self.nb_entree = 0
-        self.entrees = []
+        self.entrees = [self.attributs]
 
 
     def ajouter(self, attribut): # ajoute un attribut à la fin de la table
@@ -34,11 +34,11 @@ class List_Tables:
 
 def Input_to_SQL(tableau):
     nom = input("Nom du tableau : ")
-    table = Table(nom)
-    tableau.ajouter_table(table)
     taille = int(input("nombres d'attributs : "))
+    table = Table(nom, taille)
     for i in range(taille):
         # il manque pleins de trucs en fait
+        pass
 
 
 def interface():
@@ -47,7 +47,7 @@ def interface():
     while not (0 < IN < 5):
         print("Que voulez vous faire :")
         print("1: info -> SQL\n2: info -> mcd...\n")
-        IN = input("votre réponse : ")
+        IN = int(input("votre réponse : "))
     match IN:
         case 1:
             Input_to_SQL(liste_tables)
@@ -64,3 +64,4 @@ def interface():
     - faire Interface
 """
 
+interface()
