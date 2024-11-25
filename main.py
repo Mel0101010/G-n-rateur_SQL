@@ -7,16 +7,28 @@ class Table:
             elt = input(f"Nom de l'attribut n°{i+1}")
             self.attributs.append(elt)
         self.nb_entree = 0
-        self.entrees = [self.attributs]
+        self.entities = [self.attributs]
 
 
     def ajouter(self, attribut): # ajoute un attribut à la fin de la table
-        self.attributs.append(attribut)
-        self.nb_attributs+=1
+        self.entities.append(attribut) # faut typer ses attributs
+        self.nb_entree+=1
     
     def retirer(self): # retirer le dernier attribut ajouté
-        self.attributs.pop()
-        self.nb_attributs-=1
+        self.entities.pop()
+        self.nb_entree-=1
+
+    def afficher(self): # affiche une table non nulle || faire cette fonction la prochaine fois
+        print("--------------------")
+        print(self.nom)
+        print("--------------------")
+        for i in range(self.nb_entree):
+            line = ""
+            for j in range(self.nb_attributs):
+                line = line + self.attributs[j] + '|'
+            print(line)
+            print("-----------------------")
+
 
 
 class List_Tables:
@@ -36,9 +48,12 @@ def Input_to_SQL(tableau):
     nom = input("Nom du tableau : ")
     taille = int(input("nombres d'attributs : "))
     table = Table(nom, taille)
-    for i in range(taille):
-        # il manque pleins de trucs en fait
-        pass
+    entity = []
+    for i in range(taille): # permet d'ajouter une ligne
+        attribut = input(f"ligne 1 : attribut n° {i+1} : ")
+        entity.append(attribut)
+    table.ajouter(entity)
+    table.afficher()
 
 
 def interface():
