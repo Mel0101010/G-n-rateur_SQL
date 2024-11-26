@@ -19,19 +19,18 @@ class Table:
         self.nb_entree-=1
 
     def afficher(self): # affiche une table non nulle || faire cette fonction la prochaine fois
-        print("-"*max())
-        print(self.nom)
-        print("--------------------")
+        longueur_max = taille_ligne(self.entities) + 1 + self.nb_attributs
+        print("-"*longueur_max)
+        print('|' + self.nom + '|')
+        print("-"*longueur_max)
         
         for i in range(len(self.entities)):
             line = "|"
             for j in range(len(self.entities[i])):
                 line = line + str(self.entities[i][j]) + '|'
             print(line)
-            print("-----------------------")
+            print("-" * longueur_max)
             
-
-
 
 class List_Tables:
     def __init__(self):
@@ -57,6 +56,17 @@ def Input_to_SQL(tableau):
     table.ajouter(entity)
     table.afficher()
 
+def taille_ligne(tab): 
+    """
+    prend en entree un tableau 2D et renvoie la taille de la ligne la plus grande. -- utile dans Table.afficher
+    """
+    res = 0
+    for ligne in tab:
+        len_line = 0
+        for inp in ligne:
+            len_line+=len(inp)
+        res = max(res, len_line)
+    return res
 
 def interface():
     liste_tables = List_Tables()
