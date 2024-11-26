@@ -19,15 +19,17 @@ class Table:
         self.nb_entree-=1
 
     def afficher(self): # affiche une table non nulle || faire cette fonction la prochaine fois
-        print("--------------------")
+        print("-"*max())
         print(self.nom)
         print("--------------------")
-        for i in range(self.nb_entree):
-            line = ""
-            for j in range(self.nb_attributs):
-                line = line + self.attributs[j] + '|'
+        
+        for i in range(len(self.entities)):
+            line = "|"
+            for j in range(len(self.entities[i])):
+                line = line + str(self.entities[i][j]) + '|'
             print(line)
             print("-----------------------")
+            
 
 
 
