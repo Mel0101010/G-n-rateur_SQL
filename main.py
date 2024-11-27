@@ -58,29 +58,52 @@ def Input_to_SQL(tableau):
 
 
 def Input_to_mcd():
-    # Demande du nombre de tables et de liens
+    # Demande du nombre de tables et de éléments
     nb_tab = int(input("Nombre de tables : "))
-    nb_emt = int(input("Nombre de liens par table (en moyenne) : "))
+    nb_emt = int(input("Nombre de éléments par table (en moyenne) : "))
 
     # Initialisation du dictionnaire
-    dico = {}
+    dico_table = {}
 
-    # Saisie des noms de tables et initialisation des liens
+    # Saisie des noms de tables et initialisation des éléments
     for j in range(nb_tab):
         key = input(f"Nom de la table {j + 1} : ")  # Demande du nom de la table
-        dico[key] = []  # Chaque table est associée à une liste de liens
+        dico_table[key] = []  # Chaque table est associée à une liste de éléments
 
-    # Ajout des liens pour chaque table
-    for table in dico:
+    # Ajout des éléments pour chaque table
+    for table in dico_table:
         print(f"Ajoutez des éléments pour la table '{table}' :")
         for _ in range(nb_emt):
             emt = input(f"Éléments {_ + 1} : ")
-            dico[table].append(emt)  # Ajout du lien à la liste de la table
+            dico_table[table].append(emt)  # Ajout emt à la liste de la table
 
-    # Affichage du dictionnaire final
-    print("\nDictionnaire des tables et leurs éléments :")
-    for table, emts in dico.items():
-        print(f"{table} : {emts}")
+    # Création des liens entre les tables
+    print("\nCréation des liens :")
+    nb_link = int(input("Combien de liens voulez-vous créer ? "))
+    dico_link = {}
+
+    # Saisie des liens et des tables associées
+    for h in range(nb_link):
+        link_name = input(f"Nom du lien {h + 1} : ")
+        dico_link[link_name] = []  # Chaque lien sera une liste de tables
+
+    for link in dico_link:
+        print(f"\nAjoutez des tables au lien '{link}' :")
+        nb_related_tables = int(input(f"Combien de tables pour le lien '{link}' ? "))
+        for _ in range(nb_related_tables):
+            related_table = input("Nom de la table à ajouter : ")
+            dico_link[link].append(related_table)  # Ajout de la table à la liste associée au lien
+
+    # Affichage des liens et des tables associées
+    print("\nDictionnaire des liens :")
+    for link, tables in dico_link.items():
+        liens_str = ", ".join(tables)  # Convertit la liste en une chaîne séparée par des virgules
+        print(f"Lien {link} , {liens_str}")
+    
+    #Affichage des Tables et des éléments associés
+    for tables, emt in dico_table.items():
+        table_str=", ".join(emt)
+        print(f"Tables {tables} : {table_str}")
 
 
 
@@ -117,7 +140,6 @@ def interface():
     - Fix table.ajouter et table.retirer
     - faire Input_to_SQL
     - faire Interface
-    - faire dico des liens
 """
 
 interface()
