@@ -56,8 +56,58 @@ def Input_to_SQL(tableau):
     table.ajouter(entity)
     table.afficher()
 
+def input_to_sql():
+    # Demande du nombre de tables
+    nb_tab = int(input("Nombre de tables : "))
 
-def Input_to_mcd():
+    # Initialisation du dictionnaire pour les tables
+    tables = {}
+
+    # Création des tables
+    for t in range(nb_tab):
+        table_name = input(f"Nom de la table {t + 1} : ")
+        nb_col = int(input(f"Nombre de colonnes pour la table '{table_name}' : "))
+
+        # Saisie des colonnes
+        print(f"\nAjoutez les colonnes pour la table '{table_name}' :")
+        columns = []
+        for i in range(nb_col):
+            col_name = input(f"Nom de la colonne {i + 1} : ")
+            col_type = input(f"Type SQL de la colonne '{col_name}' (ex : INT, VARCHAR(255)) : ")
+            columns.append((col_name, col_type))  # Stocker le nom et le type de la colonne
+
+        # Saisie des lignes
+        nb_line = int(input(f"Combien de lignes pour la table '{table_name}' ? "))
+        rows = []
+        for l in range(nb_line):
+            print(f"\nAjoutez les données pour la ligne {l + 1} :")
+            row = {}
+            for col_name, _ in columns:
+                value = input(f"Valeur pour la colonne '{col_name}' : ")
+                # Ajout de guillemets pour les types texte
+                if isinstance(value, str) and not value.isdigit():
+                    value = f"'{value}'"
+                row[col_name] = value
+            rows.append(row)
+
+        # Ajout de la table au dictionnaire
+        tables[table_name] = {"columns": columns, "rows": rows}
+
+    # Affichage du contenu des tables en SQL
+    print("\n=== Instructions SQL ===")
+    for table_name, table_data in tables.items():
+        # Génération de la commande CREATE TABLE
+        columns_sql = ", ".join([f"{col_name} {col_type}" for col_name, col_type in table_data["columns"]])
+        print(f"CREATE TABLE {table_name} ({columns_sql});")
+
+        # Génération des commandes INSERT INTO
+        for row in table_data["rows"]:
+            values_sql = ", ".join([str(row[col_name]) for col_name, _ in table_data["columns"]])
+            print(f"INSERT INTO {table_name} VALUES ({values_sql});")
+
+
+
+def input_to_mcd():
     # Demande du nombre de tables et de éléments
     nb_tab = int(input("Nombre de tables : "))
     nb_emt = int(input("Nombre de éléments par table (en moyenne) : "))
@@ -98,12 +148,12 @@ def Input_to_mcd():
     print("\nDictionnaire des liens :")
     for link, tables in dico_link.items():
         liens_str = ", ".join(tables)  # Convertit la liste en une chaîne séparée par des virgules
-        print(f"Lien {link} , {liens_str}")
+        print(f"Lien {link}, {liens_str}")
     
     #Affichage des Tables et des éléments associés
     for tables, emt in dico_table.items():
         table_str=", ".join(emt)
-        print(f"Tables {tables} : {table_str}")
+        print(f"Tables {tables}: {table_str}")
 
 
 
@@ -124,15 +174,15 @@ def interface():
     IN = -1
     while not (0 < IN < 5):
         print("Que voulez vous faire :")
-        print("1: info -> SQL\n2: info -> mcd...\n")
+        print("1: info -> SQL\n2: info -> mcd...\n3: info -> testsql")
         IN = int(input("votre réponse : "))
     match IN:
         case 1:
             Input_to_SQL(liste_tables)
         case 2:
-            Input_to_mcd()
-        case _:
-            pass
+            input_to_mcd()
+        case 3:
+            input_to_sql()
 
 """
 
