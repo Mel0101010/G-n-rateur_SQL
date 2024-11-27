@@ -56,6 +56,34 @@ def Input_to_SQL(tableau):
     table.ajouter(entity)
     table.afficher()
 
+
+def Input_to_mcd():
+    # Demande du nombre de tables et de liens
+    nb_tab = int(input("Nombre de tables : "))
+    nb_emt = int(input("Nombre de liens par table (en moyenne) : "))
+
+    # Initialisation du dictionnaire
+    dico = {}
+
+    # Saisie des noms de tables et initialisation des liens
+    for j in range(nb_tab):
+        key = input(f"Nom de la table {j + 1} : ")  # Demande du nom de la table
+        dico[key] = []  # Chaque table est associée à une liste de liens
+
+    # Ajout des liens pour chaque table
+    for table in dico:
+        print(f"Ajoutez des éléments pour la table '{table}' :")
+        for _ in range(nb_emt):
+            emt = input(f"Éléments {_ + 1} : ")
+            dico[table].append(emt)  # Ajout du lien à la liste de la table
+
+    # Affichage du dictionnaire final
+    print("\nDictionnaire des tables et leurs éléments :")
+    for table, emts in dico.items():
+        print(f"{table} : {emts}")
+
+
+
 def taille_ligne(tab): 
     """
     prend en entree un tableau 2D et renvoie la taille de la ligne la plus grande. -- utile dans Table.afficher
@@ -79,7 +107,7 @@ def interface():
         case 1:
             Input_to_SQL(liste_tables)
         case 2:
-            pass
+            Input_to_mcd()
         case _:
             pass
 
@@ -89,6 +117,7 @@ def interface():
     - Fix table.ajouter et table.retirer
     - faire Input_to_SQL
     - faire Interface
+    - faire dico des liens
 """
 
 interface()
