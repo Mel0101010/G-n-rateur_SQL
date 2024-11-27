@@ -58,6 +58,11 @@ def Input_to_SQL(tableau):
 
 def input_to_sql():
     # Demande du nombre de tables
+    files=str(input("Nom du fichier : "))
+    if files == "":
+        files = "main"
+
+    
     nb_tab = int(input("Nombre de tables : "))
 
     # Initialisation du dictionnaire pour les tables
@@ -99,18 +104,29 @@ def input_to_sql():
         # Génération de la commande CREATE TABLE
         columns_sql = ", ".join([f"{col_name} {col_type}" for col_name, col_type in table_data["columns"]])
         print(f"CREATE TABLE {table_name} ({columns_sql});")
+        f = open(files+".sql", "a")
+        f.write(f"CREATE TABLE {table_name} ({columns_sql});\n")
+        f.close
 
         # Génération des commandes INSERT INTO
         for row in table_data["rows"]:
             values_sql = ", ".join([str(row[col_name]) for col_name, _ in table_data["columns"]])
             print(f"INSERT INTO {table_name} VALUES ({values_sql});")
+            f = open(files+".sql", "a")
+            f.write(f"INSERT INTO {table_name} VALUES ({values_sql});\n")
+            f.close
 
 
 
 def input_to_mcd():
     # Demande du nombre de tables et de éléments
+    files=str(input("Nom du fichier (sans extension) : "))
+    if files == "":
+        files = "main"
+    
     nb_tab = int(input("Nombre de tables : "))
     nb_emt = int(input("Nombre de éléments par table (en moyenne) : "))
+
 
     # Initialisation du dictionnaire
     dico_table = {}
@@ -149,12 +165,17 @@ def input_to_mcd():
     for link, tables in dico_link.items():
         liens_str = ", ".join(tables)  # Convertit la liste en une chaîne séparée par des virgules
         print(f"Lien {link}, {liens_str}")
+        f = open(files+".mcd", "a")
+        f.write(f"{link}, {liens_str}\n")
+        f.close
     
     #Affichage des Tables et des éléments associés
     for tables, emt in dico_table.items():
         table_str=", ".join(emt)
         print(f"Tables {tables}: {table_str}")
-
+        f = open(files+".mcd", "a")
+        f.write(f"{tables}: {table_str}\n")
+        f.close
 
 
 def taille_ligne(tab): 
