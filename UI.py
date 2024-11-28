@@ -1,41 +1,55 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import messagebox
+import main
 
-# Création de la fenêtre principale
-root = tk.Tk()
-root.title("Exemple d'interface Tkinter")
-root.geometry("1080x720")
+def execute_option(selection):
+    """
+    Exécute la fonction correspondant à l'option sélectionnée.
+    """
+    if selection == "Input to SQL":
+        result = main.input_to_sql()
+    elif selection == "Input to MCD":
+        result = main.input_to_mcd()
+    elif selection == "MCD to SQL":
+        result = main.mcd_to_sql()
+    else:
+        result = "Aucune option valide sélectionnée."
+    
+    messagebox.showinfo("Résultat", result)
 
-#root.config(bg="lightblue")  # Couleur de fond de la fenêtre principale
+# Configuration de l'interface principale
+def main_interface():
+    root = tk.Tk()
+    root.title("Interface Menu Python")
 
-# Fonction pour récupérer les valeurs
-def afficher_valeurs():
-    input_text = entry.get()  # Récupère le texte de l'input
-    selected_option = combo.get()  # Récupère l'option sélectionnée dans le menu déroulant
-    label_resultat.config(text=f"Name: {input_text}\nConvert: {selected_option}")
+    # Taille de la fenêtre
+    root.geometry("400x200")
 
-# Champ de saisie (input)
-entry_label = tk.Label(root, text="Entrez quelque chose:")
-entry_label.pack(pady=10)
+    # Titre principal
+    title = tk.Label(root, text="Menu Principal", font=("Arial", 18, "bold"))
+    title.pack(pady=20)
 
-entry = tk.Entry(root, bg="gray")  # Couleur de fond du champ de saisie
-entry.pack(pady=5)
+    # Options disponibles
+    options = ["Input to SQL", "Input to MCD", "MCD to SQL"]
+    
+    # Variable pour le menu déroulant
+    selected_option = tk.StringVar()
+    selected_option.set("Sélectionnez une option")
 
-# Menu déroulant (Combobox)
-combo_label = tk.Label(root, text="Choisissez une convertion:")
-combo_label.pack(pady=10)
+    # Menu déroulant
+    dropdown_menu = tk.OptionMenu(root, selected_option, *options)
+    dropdown_menu.config(font=("Arial", 14), width=20)
+    dropdown_menu.pack(pady=10)
 
-options = ["Info -> SQL", "Info -> MCD"]
-combo = ttk.Combobox(root, values=options, state="readonly")
-combo.pack(pady=5)
+    # Bouton pour exécuter l'option sélectionnée
+    execute_btn = tk.Button(root, text="Exécuter", font=("Arial", 14), 
+                            command=lambda: execute_option(selected_option.get()))
+    execute_btn.pack(pady=10)
 
-# Bouton pour afficher les valeurs
-button = tk.Button(root, text="Afficher", command=afficher_valeurs)
-button.pack(pady=20)
+    # Bouton pour quitter
+    quit_btn = tk.Button(root, text="Quitter", font=("Arial", 14), command=root.quit, bg="red", fg="white")
+    quit_btn.pack(pady=20)
 
-# Label pour afficher les résultats
-label_resultat = tk.Label(root, text="Résultat affiché ici")
-label_resultat.pack(pady=10)
+    root.loop()
 
-# Lancement de l'application
-root.mainloop()
+main_interface()
