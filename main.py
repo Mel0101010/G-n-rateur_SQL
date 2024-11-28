@@ -1,4 +1,4 @@
-import os
+import os, sqlite3
 
 class Table:
     def __init__(self, nom, attributs):
@@ -49,7 +49,7 @@ class List_Tables:
 
 def input_to_sql():
     # Demande du nombre de tables
-    files=str(input("Nom du fichier : "))
+    files=input("Nom du fichier : ")
     if files == "":
         files = "main"
 
@@ -110,7 +110,7 @@ def input_to_sql():
 
 def input_to_mcd():
     # Demande du nombre de tables et de éléments
-    files=str(input("Nom du fichier (sans extension) : "))
+    files=input("Nom du fichier (sans extension) : ")
     if files == "":
         files = "main"
     
@@ -169,9 +169,34 @@ def input_to_mcd():
 
 
 def mcd_to_sql():
-    files=str(input("Nom du fichier à exporter : "))
+    files=input("Nom du fichier à exporter : ")
     os.system('source .venv/bin/activate')
     os.system('mocodo -i '+files+' -t sql')
+
+
+def sql_exec():
+    # Chemin du fichier SQL
+    sql_file = input("Entrer le chemin d'accès de votre fichier : ")
+
+    # Connexion à une base de données SQLite en mémoire
+    conn = sqlite3.connect(':memory:')  # Utilisation de la RAM uniquement
+    cursor = conn.cursor()
+
+    # Lire le contenu du fichier SQL
+    with open(sql_file, 'r') as file:
+        sql_script = file.read()
+
+    # Exécuter les commandes SQL du fichier
+    try:
+        cursor.executescript(sql_script)
+        print("Script SQL exécuté avec succès.")
+    except sqlite3.Error as e:
+        print(f"Erreur lors de l'exécution du script SQL : {e}")
+    
+    # Permet de fermer la connection à la RAM
+    conn.close()
+
+
 
 def taille_ligne(tab): 
     """

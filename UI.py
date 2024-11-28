@@ -36,14 +36,14 @@ elif options == 'Info -> MCD':
     action = main.input_to_mcd()
 
 elif options == 'MCD -> SQL':
-    action = main.mcd_to_sql()
+    action= main.mcd_to_sql()
 
 
 combo = ttk.Combobox(root, values=options, state="readonly")
 combo.pack(pady=5)
 
 # Bouton pour afficher les valeurs
-button = tk.Button(root, text="Afficher", command=action)
+button = tk.Button(root, text="Afficher", command=afficher_valeurs)
 button.pack(pady=20)
 
 # Label pour afficher les résultats
