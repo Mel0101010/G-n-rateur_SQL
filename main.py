@@ -190,7 +190,7 @@ def interface():
     IN = -1
     while not (0 < IN < 5):
         print("Que voulez vous faire :")
-        print("1: TEXT -> SQL\n2: TEXT -> MCD\n3: MCD -> SQL")
+        print("1: TEXT -> SQL\n2: TEXT -> MCD\n3: MCD -> SQL\n4: CSV -> SQL")
         IN = int(input("votre réponse : "))
     match IN:
         case 1:
