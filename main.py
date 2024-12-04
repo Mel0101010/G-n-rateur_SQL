@@ -1,4 +1,3 @@
-import os, sqlite3
 import create, push
 
 
@@ -12,19 +11,19 @@ def interface():
             IN = int(input("votre réponse : "))
         match IN:
             case 1:
-                filename=input("Nom du fichier : ")
+                filename=input("\nNom du fichier : ")
                 if filename == "":
                     filename = "main"
                 choice = create.textinput(filename)
                 choice.input_to_sql()
             case 2:
-                filename=input("Nom du fichier : ")
+                filename=input("\nNom du fichier : ")
                 if filename == "":
                     filename = "main"
                 choice = create.textinput(filename)
                 choice.input_to_mcd()
             case 3:
-                filename=input("Nom du fichier : ")
+                filename=input("\nNom du fichier : ")
                 if filename == "":
                     filename = "main"
                 choice = create.textinput(filename)
@@ -43,19 +42,19 @@ def execution():
         IN = int(input("votre réponse : "))
     match IN:
         case 1:
-            filename=input("Nom du fichier : ")
+            filename=input("\nNom du fichier : ")
             if filename == "":
                 filename = "main"
             choice = push.exect(filename)
             choice.sqlite_exec()
         case 2:
-            filename=input("Nom du fichier : ")
+            filename=input("\nNom du fichier : ")
             if filename == "":
                 filename = "main"
             choice = push.exect(filename)
             choice.exec_mcd()
         case 3:
-            filename=input("Nom du fichier : ")
+            filename=input("\nNom du fichier : ")
             if filename == "":
                 filename = "main"
             choice = push.exect(filename)

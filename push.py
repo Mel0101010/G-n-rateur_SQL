@@ -7,7 +7,7 @@ class exect():
         self.filename=filename
 
     def afficher(self):
-        nom, extension=os.path.splitext(self.fileneme)
+        nom, extension=os.path.splitext(self.filename)
 
         if extension.lower()==".sql":
             pass
@@ -131,4 +131,5 @@ class exect():
 
     def exec_mcd(self):
         os.system("mocodo --input "+self.filename)
+        os.system("rm "+self.filename+"_geo.json")
 
