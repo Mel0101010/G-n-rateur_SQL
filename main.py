@@ -1,51 +1,67 @@
 import os, sqlite3
 
-class Table:
-    def __init__(self, nom, attributs):
-        self.nb_attributs = attributs
-        self.nom = nom
-        self.attributs = []
-        for i in range(attributs):
-            elt = input(f"Nom de l'attribut n°{i+1}")
-            self.attributs.append(elt)
-        self.nb_entree = 0
-        self.entities = [self.attributs]
 
+def afficher():
+    files = input("Quel fichier : ")
+    # Nom de la base de données temporaire
+    db_temp = "temp_database.db"
 
-    def ajouter(self, attribut): # ajoute un attribut à la fin de la table
-        self.entities.append(attribut) # faut typer ses attributs
-        self.nb_entree+=1
-    
-    def retirer(self): # retirer le dernier attribut ajouté
-        self.entities.pop()
-        self.nb_entree-=1
+    try:
+        # Étape 1 : Créer une base de données SQLite temporaire
+        connexion = sqlite3.connect(db_temp)
+        curseur = connexion.cursor()
 
-    def afficher(self): # affiche une table non nulle || faire cette fonction la prochaine fois
-        longueur_max = taille_ligne(self.entities) + 1 + self.nb_attributs
-        print("-"*longueur_max)
-        print('|' + self.nom + '|')
-        print("-"*longueur_max)
-        
-        for i in range(len(self.entities)):
-            line = "|"
-            for j in range(len(self.entities[i])):
-                line = line + str(self.entities[i][j]) + '|'
-            print(line)
-            print("-" * longueur_max)
-            
+        # Lire le contenu du fichier SQL et filtrer les SELECT
+        instructions = []
+        with open(files, "r", encoding="utf-8") as f:
+            for ligne in f:
+                ligne_str = ligne.strip()
+                # Ignorer les lignes SELECT
+                if ligne_str.upper().startswith("SELECT"):
+                    continue
+                instructions.append(ligne_str)
 
-class List_Tables:
-    def __init__(self):
-        self.taille = 0
-        self.liste = []
-    
-    def ajouter_table(self, table):
-        self.taille +=1
-        self.liste.append(table)
+        # Joindre et exécuter les instructions filtrées
+        script_filtre = "\n".join(instructions)
+        curseur.executescript(script_filtre)
+        connexion.commit()
 
-    def retirer_table(self, table):
-        self.taille-=1
-        self.liste.pop()
+        # Étape 2 : Récupérer toutes les tables
+        curseur.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        tables = curseur.fetchall()
+
+        if not tables:
+            print("Aucune table trouvée dans le fichier SQL.")
+        else:
+            print("Tables et leur contenu :")
+            # Étape 3 : Afficher le contenu de chaque table
+            for table_name, in tables:
+                print(f"\nTable : {table_name}")
+                curseur.execute(f"SELECT * FROM {table_name};")
+                rows = curseur.fetchall()
+
+                # Récupérer les colonnes de la table
+                colonnes = [desc[0] for desc in curseur.description]
+                print(f"Colonnes : {', '.join(colonnes)}")
+
+                # Afficher les données
+                for row in rows:
+                    print(row)
+
+        # Fermer la connexion
+        connexion.close()
+
+    except FileNotFoundError:
+        print(f"Erreur : Le fichier '{files}' est introuvable.")
+    except sqlite3.Error as e:
+        print(f"Erreur SQLite : {e}")
+    except Exception as e:
+        print(f"Erreur : {e}")
+    finally:
+        # Supprimer la base temporaire
+        if os.path.exists(db_temp):
+            os.remove(db_temp)
+
 
 def input_to_sql():
     # Demande du nombre de tables
@@ -170,32 +186,70 @@ def input_to_mcd():
 
 def mcd_to_sql():
     files=input("Nom du fichier à exporter : ")
-    os.system('source .venv/bin/activate')
-    os.system('mocodo -i '+files+' -t sql')
+    base_name = os.path.splitext(files)[0]
+    os.system('mocodo -i '+files+' -t sqlite\n') # Créer un fichier avec ddl dans le nom
 
 
-def sql_exec():
+
+def sqlite_exec():
     # Chemin du fichier SQL
-    sql_file = input("Entrer le chemin d'accès de votre fichier : ")
+    files=input("Quel est votre fichier : ")
+    nom, extension=os.path.splitext(files)
+
+    if extension.lower()==".sql":
+        pass
+    else:
+        files=files+".sql"
+    
+    # Vérifier si le fichier existe
+    if not os.path.exists(files):
+        print(f"Erreur : le fichier {files} n'existe pas.")
+        return
 
     # Connexion à une base de données SQLite en mémoire
     conn = sqlite3.connect(':memory:')  # Utilisation de la RAM uniquement
     cursor = conn.cursor()
 
     # Lire le contenu du fichier SQL
-    with open(sql_file, 'r') as file:
-        sql_script = file.read()
-
-    # Exécuter les commandes SQL du fichier
     try:
-        cursor.executescript(sql_script)
-        print("Script SQL exécuté avec succès.")
-    except sqlite3.Error as e:
-        print(f"Erreur lors de l'exécution du script SQL : {e}")
-    
-    # Permet de fermer la connection à la RAM
-    conn.close()
+        with open(files, 'r') as file:
+            sql_script = file.read()
 
+        # Exécuter les commandes SQL du fichier
+        try:
+            cursor.executescript(sql_script)
+            print("Script SQL exécuté avec succès.")
+            
+            # Afficher les résultats des requêtes SELECT du script
+            print("\nRésultats des requêtes SELECT :")
+            for statement in sql_script.split(';'):
+                statement = statement.strip()
+                if statement.upper().startswith("SELECT"):
+                    try:
+                        cursor.execute(statement)
+                        rows = cursor.fetchall()
+                        if rows:
+                            print(f"\nRequête : {statement}")
+                            for row in rows:
+                                print(row)
+                        else:
+                            print(f"\nRequête : {statement} (Aucun résultat trouvé)")
+                    except sqlite3.Error as e:
+                        print(f"Erreur lors de l'exécution de la requête '{statement}' : {e}")
+        except sqlite3.Error as e:
+            print(f"Erreur lors de l'exécution du script SQL : {e}")
+    except Exception as ex:
+        print(f"Erreur lors de la lecture du fichier SQL : {ex}")
+    finally:
+        conn.close()
+    
+    print("\n")
+
+
+
+def exec_mcd():
+    files=input("Quel est votre fichier : ")
+    os.system("mocodo --input "+files)
 
 
 def taille_ligne(tab): 
@@ -211,25 +265,41 @@ def taille_ligne(tab):
     return res
 
 def interface():
-    liste_tables = List_Tables()
+    stop = True
+    while stop:
+        IN = -1
+        while not (0 < IN < 6):
+            print("Que voulez vous faire : ")
+            print("1: TEXT -> SQL\n2: TEXT -> MCD\n3: MCD -> SQL\n4: Exec\n5: Stop")
+            IN = int(input("votre réponse : "))
+        match IN:
+            case 1:
+                input_to_sql()
+            case 2:
+                input_to_mcd()
+            case 3:
+                mcd_to_sql()
+            case 4:
+                execution()
+            case 5:
+                stop=False
+
+
+def execution():
     IN = -1
     while not (0 < IN < 5):
-        print("Que voulez vous faire :")
-        print("1: TEXT -> SQL\n2: TEXT -> MCD\n3: MCD -> SQL\n4: CSV -> SQL")
+        print("Que voulez vous faire : ")
+        print("1: Exec SQL\n2: Exec MCD\n3: None\n4: None")
         IN = int(input("votre réponse : "))
     match IN:
         case 1:
-            input_to_sql()
+            sqlite_exec()
         case 2:
-            input_to_mcd()
+            exec_mcd()
         case 3:
-            mcd_to_sql()
+            ...
+        case 4:
+            ...
 
-"""
 
-    to do list :
-    - Fix table.ajouter et table.retirer
-    - faire Interface
-"""
-
-interface()
+afficher()
