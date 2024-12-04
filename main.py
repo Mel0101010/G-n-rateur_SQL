@@ -12,11 +12,23 @@ def interface():
             IN = int(input("votre réponse : "))
         match IN:
             case 1:
-                create.input_to_sql()
+                filename=input("Nom du fichier : ")
+                if filename == "":
+                    filename = "main"
+                choice = create.textinput(filename)
+                choice.input_to_sql()
             case 2:
-                create.input_to_mcd()
+                filename=input("Nom du fichier : ")
+                if filename == "":
+                    filename = "main"
+                choice = create.textinput(filename)
+                choice.input_to_mcd()
             case 3:
-                create.mcd_to_sql()
+                filename=input("Nom du fichier : ")
+                if filename == "":
+                    filename = "main"
+                choice = create.textinput(filename)
+                choice.mcd_to_sql()
             case 4:
                 execution()
             case 5:
@@ -31,13 +43,33 @@ def execution():
         IN = int(input("votre réponse : "))
     match IN:
         case 1:
-            push.sqlite_exec()
+            filename=input("Nom du fichier : ")
+            if filename == "":
+                filename = "main"
+            choice = push.exect(filename)
+            choice.sqlite_exec()
         case 2:
-            push.exec_mcd()
+            filename=input("Nom du fichier : ")
+            if filename == "":
+                filename = "main"
+            choice = push.exect(filename)
+            choice.exec_mcd()
         case 3:
-            push.afficher()
+            filename=input("Nom du fichier : ")
+            if filename == "":
+                filename = "main"
+            choice = push.exect(filename)
+            choice.afficher()
         case 4:
             ...
+
+
+"""
+files=input("Nom du fichier : ")
+        if files == "":
+            files = "main"
+"""
+# À mettre dans les case
 
 
 interface()

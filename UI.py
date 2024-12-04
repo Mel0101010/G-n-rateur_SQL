@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-import main
+import main, create, push
 
 # Création de la fenêtre principale
 root = tk.Tk()
