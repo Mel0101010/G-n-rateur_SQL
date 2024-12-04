@@ -42,22 +42,20 @@ class textinput():
             tables[table_name] = {"columns": columns, "rows": rows}
 
         # Affichage du contenu des tables en SQL
+        f = open(self.filename+".sql", "a")
         print("\n=== Instructions SQL ===")
         for table_name, table_data in tables.items():
             # Génération de la commande CREATE TABLE
             columns_sql = ", ".join([f"{col_name} {col_type}" for col_name, col_type in table_data["columns"]])
             print(f"CREATE TABLE {table_name} ({columns_sql});")
-            f = open(self.filename+".sql", "a")
             f.write(f"CREATE TABLE {table_name} ({columns_sql});\n")
-            f.close
 
             # Génération des commandes INSERT INTO
             for row in table_data["rows"]:
                 values_sql = ", ".join([str(row[col_name]) for col_name, _ in table_data["columns"]])
                 print(f"INSERT INTO {table_name} VALUES ({values_sql});")
-                f = open(self.filename+".sql", "a")
                 f.write(f"INSERT INTO {table_name} VALUES ({values_sql});\n")
-                f.close
+        f.close
 
 
     def input_to_mcd(self):
@@ -97,25 +95,21 @@ class textinput():
                 related_table = input("Nom de la table à ajouter : ")
                 dico_link[link].append(related_table)  # Ajout de la table à la liste associée au lien
 
-        # Affichage des liens et des tables associées
         print("\nDictionnaire des liens :")
-        for link, tables in dico_link.items():
-            liens_str = ", ".join(tables)  # Convertit la liste en une chaîne séparée par des virgules
-            print(f"Lien {link}, {liens_str}")
-            f = open(self.filename+".mcd", "a")
-            f.write(f"{link}, {liens_str}\n")
-            f.close
-        
+        f = open(self.filename+".mcd", "a")
         #Affichage des Tables et des éléments associés
         for tables, emt in dico_table.items():
             table_str=", ".join(emt)
             print(f"Tables {tables}: {table_str}")
-            f = open(self.filename+".mcd", "a")
             f.write(f"{tables}: {table_str}\n")
-            f.close
 
+        # Affichage des liens et des tables associées
+        for link, tables in dico_link.items():
+            liens_str = ", ".join(tables)  # Convertit la liste en une chaîne séparée par des virgules
+            print(f"Lien {link}, {liens_str}")
+            f.write(f"{link}, {liens_str}\n")
+        f.close
 
     def mcd_to_sql(self):
-        base_name = os.path.splitext(self.filename)[0]
         os.system('mocodo -i '+self.filename+' -t sqlite\n') # Créer un fichier avec ddl dans le nom
 

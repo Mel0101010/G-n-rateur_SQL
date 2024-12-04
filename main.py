@@ -1,4 +1,4 @@
-import create, push
+import create, push, os
 
 
 def interface():
@@ -22,6 +22,8 @@ def interface():
                     filename = "main"
                 choice = create.textinput(filename)
                 choice.input_to_mcd()
+                os.system("mocodo -i "+filename+" -t arrange")
+                os.system("rm "+filename+"_geo.json")
             case 3:
                 filename=input("\nNom du fichier : ")
                 if filename == "":
