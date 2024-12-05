@@ -23,7 +23,8 @@ def interface():
                 choice = create.textinput(filename)
                 choice.input_to_mcd()
                 os.system("mocodo -i "+filename+" -t arrange")
-                os.system("rm "+filename+"_geo.json")
+                os.system("rm "+filename+"_geo.json") #rajouter -f en cas de fichier toujours présent dans la corbeille
+                print("\nUn fichier MCD et SVG viennent d'être créés")
             case 3:
                 filename=input("\nNom du fichier : ")
                 if filename == "":
@@ -63,14 +64,6 @@ def execution():
             choice.afficher()
         case 4:
             ...
-
-
-"""
-files=input("Nom du fichier : ")
-        if files == "":
-            files = "main"
-"""
-# À mettre dans les case
 
 
 interface()

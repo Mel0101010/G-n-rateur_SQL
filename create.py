@@ -55,12 +55,12 @@ class textinput():
                 values_sql = ", ".join([str(row[col_name]) for col_name, _ in table_data["columns"]])
                 print(f"INSERT INTO {table_name} VALUES ({values_sql});")
                 f.write(f"INSERT INTO {table_name} VALUES ({values_sql});\n")
-        f.close
+        f.close()
 
 
     def input_to_mcd(self):
         nb_tab = int(input("Nombre de tables : "))
-        nb_emt = int(input("Nombre de éléments par table (en moyenne) : "))
+        nb_emt = int(input("Nombre d'éléments par table (en moyenne) : "))
 
 
         # Initialisation du dictionnaire
@@ -69,7 +69,7 @@ class textinput():
         # Saisie des noms de tables et initialisation des éléments
         for j in range(nb_tab):
             key = input(f"Nom de la table {j + 1} : ")  # Demande du nom de la table
-            dico_table[key] = []  # Chaque table est associée à une liste de éléments
+            dico_table[key] = []  # Chaque table est associée à une liste d'éléments
 
         # Ajout des éléments pour chaque table
         for table in dico_table:
@@ -108,7 +108,7 @@ class textinput():
             liens_str = ", ".join(tables)  # Convertit la liste en une chaîne séparée par des virgules
             print(f"Lien {link}, {liens_str}")
             f.write(f"{link}, {liens_str}\n")
-        f.close
+        f.close()
 
     def mcd_to_sql(self):
         os.system('mocodo -i '+self.filename+' -t sqlite\n') # Créer un fichier avec ddl dans le nom
