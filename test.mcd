@@ -1,20 +1,7 @@
-AYANT-DROIT : nom_ayant_droit, lien  
-APPARTIENT À, 0N AYANT-DROIT, 11 EMPLOYÉ  
-
-EMPLOYÉ : matricule, nom_employé  
-DIRIGE, 0N EMPLOYÉ, 11 PROJET  
-TRAVAILLE SUR, 0N EMPLOYÉ, 1N PROJET  
-APPARTIENT À, 11 EMPLOYÉ, 1N DÉPARTEMENT  
-
-PROJET : num_projet, nom_projet  
-NÉCESSITE, 1N PROJET, 0N PIÈCE : qté_requise  
-FOURNI PAR, 1N PROJET, 1N SOCIÉTÉ : qté_fournie  
-
-PIÈCE : ref_pièce, libellé_pièce  
-COMPOSÉE DE, 0N PIÈCE, 0N PIÈCE : quantité  
-
-DÉPARTEMENT : num_département, nom_département  
-CONTIENT, 1N DÉPARTEMENT, 11 EMPLOYÉ  
-
-SOCIÉTÉ : num_société, raison_sociale  
-CONTRÔLE, 0N SOCIÉTÉ, 01 SOCIÉTÉ  
+Utilisateur : user_id, name, email
+Produit : product_id, name, price
+Commande : order_id, user_id, order_date
+DétailCommande : order_detail_id, order_id, product_id, quantity
+Passer, Utilisateur, Commande
+Contenir, Commande, DétailCommande
+Inclure, Produit, DétailCommande

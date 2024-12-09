@@ -6,9 +6,19 @@ def interface():
     while stop:
         IN = -1
         while not (0 < IN < 6):
-            print("Que voulez vous faire : ")
-            print("1: TEXT -> SQL\n2: TEXT -> MCD\n3: MCD -> SQL\n4: Exec\n5: Stop")
+            print("\nQue voulez vous faire : ")
+            print(
+                "+---+-------------------+\n"
+                "| # | Option            |\n"
+                "+---+-------------------+\n"
+                "| 1 | TEXT TO SQL       |\n"
+                "| 2 | TEXT TO MCD       |\n"
+                "| 3 | MCD TO SQL Table  |\n"
+                "| 4 | EXEC              |\n"
+                "| 5 | STOP              |\n"
+                "+---+-------------------+")
             IN = int(input("votre réponse : "))
+            os.system('clear')
         match IN:
             case 1:
                 filename=input("\nNom du fichier : ")
@@ -40,9 +50,18 @@ def interface():
 def execution():
     IN = -1
     while not (0 < IN < 5):
-        print("Que voulez vous faire : ")
-        print("1: Exec SQL\n2: Exec MCD\n3: Print Table\n4: None")
+        print("\nQue voulez vous faire : ")
+        print(
+            "+---+----------------+\n"
+            "| # | Option         |\n"
+            "+---+----------------+\n"
+            "| 1 | Exec SQL       |\n"
+            "| 2 | Exec MCD       |\n"
+            "| 3 | Print Table    |\n"
+            "| 4 | BACK           |\n"
+            "+---+----------------+")
         IN = int(input("votre réponse : "))
+        os.system('clear')
     match IN:
         case 1:
             filename=input("\nNom du fichier : ")
@@ -63,7 +82,7 @@ def execution():
             choice = push.exect(filename)
             choice.afficher()
         case 4:
-            ...
+            pass
 
 
 interface()

@@ -4,14 +4,13 @@ import os
 import create
 import push
 
-
 class GUIApp:
     def __init__(self, root):
         self.root = root
         self.root.title("SQL and MCD Interface")
-        self.root.geometry("800x600")
+        self.root.geometry("800x700")
         
-        # Section Create
+        # Create Section
         self.create_section = tk.LabelFrame(self.root, text="Create Section", padx=10, pady=10)
         self.create_section.pack(fill="both", expand="yes", padx=20, pady=10)
 
@@ -32,7 +31,7 @@ class GUIApp:
         self.execute_button = tk.Button(self.create_section, text="Execute Create Action", command=self.execute_create_action)
         self.execute_button.grid(row=2, columnspan=2, padx=5, pady=5)
 
-        # Section Push
+        # Push Section
         self.push_section = tk.LabelFrame(self.root, text="Push Section", padx=10, pady=10)
         self.push_section.pack(fill="both", expand="yes", padx=20, pady=10)
 
@@ -42,7 +41,6 @@ class GUIApp:
         self.push_filename_entry = tk.Entry(self.push_section, width=40)
         self.push_filename_entry.grid(row=0, column=1, padx=5, pady=5)
 
-        # Add Browse button
         self.browse_button = tk.Button(self.push_section, text="Browse", command=self.browse_file)
         self.browse_button.grid(row=0, column=2, padx=5, pady=5)
 
@@ -57,19 +55,16 @@ class GUIApp:
         self.push_execute_button = tk.Button(self.push_section, text="Execute Push Action", command=self.execute_push_action)
         self.push_execute_button.grid(row=2, columnspan=2, padx=5, pady=5)
 
-        # Terminal (Interactive container)
+        # Terminal Section
         self.terminal_section = tk.LabelFrame(self.root, text="Terminal", padx=10, pady=10)
         self.terminal_section.pack(fill="both", expand="yes", padx=20, pady=10)
 
-        # Text widget to display terminal output
         self.terminal_text = tk.Text(self.terminal_section, height=15, width=70, wrap="word", state=tk.DISABLED)
         self.terminal_text.grid(row=0, column=0, padx=5, pady=5)
 
-        # Entry for typing commands
         self.terminal_input = tk.Entry(self.terminal_section, width=70)
         self.terminal_input.grid(row=1, column=0, padx=5, pady=5)
 
-        # Submit button to process terminal commands
         self.terminal_input_button = tk.Button(self.terminal_section, text="Submit Command", command=self.submit_command)
         self.terminal_input_button.grid(row=2, column=0, padx=5, pady=5)
 
@@ -80,12 +75,20 @@ class GUIApp:
         self.terminal_text.config(state=tk.DISABLED)
         self.terminal_text.yview(tk.END)
 
+    def log_execution(self, action_name, func, *args, **kwargs):
+        """Log execution of a function and handle exceptions."""
+        self.write_to_terminal(f"Starting: {action_name}...")
+        try:
+            func(*args, **kwargs)
+            self.write_to_terminal(f"Finished: {action_name}.")
+        except Exception as e:
+            self.write_to_terminal(f"Error during {action_name}: {e}")
+
     def submit_command(self):
-        """Submit the command entered by the user and execute it."""
         command = self.terminal_input.get()
         if command.strip():
-            self.write_to_terminal(f"> {command}")  # Show the command in the terminal
-            self.terminal_input.delete(0, tk.END)  # Clear the input field
+            self.write_to_terminal(f"> {command}")
+            self.terminal_input.delete(0, tk.END)
 
             if command == "help":
                 self.write_to_terminal("Commands available: help, execute create, execute push.")
@@ -109,13 +112,9 @@ class GUIApp:
         create_instance = create.textinput(filename)
 
         if action == "input_to_sql":
-            self.write_to_terminal("Executing 'input_to_sql'...")
-            create_instance.input_to_sql()
-            self.write_to_terminal(f"SQL file '{filename}.sql' created successfully!")
+            self.log_execution("input_to_sql", create_instance.input_to_sql)
         elif action == "input_to_mcd":
-            self.write_to_terminal("Executing 'input_to_mcd'...")
-            create_instance.input_to_mcd()
-            self.write_to_terminal(f"MCD file '{filename}.mcd' created successfully!")
+            self.log_execution("input_to_mcd", create_instance.input_to_mcd)
 
     def execute_push_action(self):
         filename = self.push_filename_entry.get()
@@ -132,16 +131,11 @@ class GUIApp:
         push_instance = push.exect(filename)
 
         if action == "afficher":
-            self.write_to_terminal("Executing 'afficher'...")
-            push_instance.afficher()
-            self.write_to_terminal(f"Executed the SQL from '{filename}' and displayed results.")
+            self.log_execution("afficher", push_instance.afficher)
         elif action == "sqlite_exec":
-            self.write_to_terminal("Executing 'sqlite_exec'...")
-            push_instance.sqlite_exec()
-            self.write_to_terminal(f"Executed the SQL from '{filename}' in memory.")
+            self.log_execution("sqlite_exec", push_instance.sqlite_exec)
 
     def browse_file(self):
-        """Open a file dialog to select a file."""
         file_path = filedialog.askopenfilename(filetypes=[("SQL Files", "*.sql"), ("All Files", "*.*")])
         if file_path:
             self.push_filename_entry.delete(0, tk.END)
