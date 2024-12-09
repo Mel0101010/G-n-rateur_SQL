@@ -74,3 +74,6 @@ Chaque attribut pour une conversion en SQL doit etre typé selon un des types su
 -  TinyInt
 -  VarChar
 
+## Autres
+
+les fichiers MCD ou SQL créés seront dans le dossier /filescreated
