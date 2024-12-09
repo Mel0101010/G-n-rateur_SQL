@@ -42,7 +42,7 @@ class textinput():
             tables[table_name] = {"columns": columns, "rows": rows}
 
         # Affichage du contenu des tables en SQL
-        f = open(self.filename+".sql", "a")
+        f = open('./filescreated/'+self.filename+".sql", "a")
         print("\n=== Instructions SQL ===")
         for table_name, table_data in tables.items():
             # Génération de la commande CREATE TABLE
@@ -96,7 +96,7 @@ class textinput():
                 dico_link[link].append(related_table)  # Ajout de la table à la liste associée au lien
 
         print("\nDictionnaire des liens :")
-        f = open(self.filename+".mcd", "a")
+        f = open('./filescreated/'+self.filename+".mcd", "a")
         #Affichage des Tables et des éléments associés
         for tables, emt in dico_table.items():
             table_str=", ".join(emt)
@@ -110,8 +110,9 @@ class textinput():
             f.write(f"{link}, {liens_str}\n")
         f.close()
 
+
     def mcd_to_sql(self):
-        os.system('mocodo -i '+self.filename+' -t sqlite\n') # Créer un fichier avec ddl dans le nom
+        os.system('mocodo -i '+self.filename+' -t sqlite --output_dir ./filescreated\n') # Créer un fichier avec ddl dans le nom
 
 
 
@@ -141,7 +142,7 @@ class textinput():
                 # Initialise un fichier avec le nom du csv avec _sql.sql pour le différentier
                 fileoutname=nom+"_sql.sql"
                 # Permet d'ouvrir le fichier SQL de sortie
-                with open(fileoutname, "w", encoding="utf-8") as sql_file:
+                with open('./filescreated/'+fileoutname, "w", encoding="utf-8") as sql_file:
                     # Rédige l'instruction CREATE TABLE
                     sql_file.write(f"CREATE TABLE {table_name} ({column_names});\n")
                     

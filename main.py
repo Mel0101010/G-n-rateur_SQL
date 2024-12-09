@@ -38,15 +38,17 @@ def interface():
                     filename = "main"
                 choice = create.textinput(filename)
                 choice.input_to_mcd()
-                os.system("mocodo -i "+filename+" -t arrange")
-                os.system("rm "+filename+"_geo.json") #rajouter -f en cas de fichier toujours présent dans la corbeille
-                print("\nUn fichier MCD et SVG viennent d'être créés")
+                os.system("mocodo -i ./filescreated/"+filename+" -t arrange")
+                os.remove('./filescreated/'+filename+'_geo.json')
+                os.remove('./filescreated/'+filename+'.svg')
             case 3:
                 filename=input("\nNom du fichier : ")
                 if filename == "":
                     filename = "main"
                 choice = create.textinput(filename)
                 choice.mcd_to_sql()
+                os.remove('./filescreated/'+filename+'_geo.json')
+                os.remove('./filescreated/'+filename+'.svg')
             case 4:
                 filename=input("\nNom du fichier : ")
                 if filename == "":
@@ -90,6 +92,7 @@ def execution():
                 filename = "main"
             choice = push.exect(filename)
             choice.exec_mcd()
+            os.remove('./filescreated/'+filename+'_geo.json')
         case 3:
             filename=input("\nNom du fichier : ")
             if filename == "":

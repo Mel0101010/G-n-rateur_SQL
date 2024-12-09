@@ -129,4 +129,4 @@ class exect():
 
 
     def exec_mcd(self):
-        os.system("mocodo --input "+self.filename+" -t arrange")
+        os.system("mocodo --input "+self.filename+" -t arrange --output_dir ./filescreated")
