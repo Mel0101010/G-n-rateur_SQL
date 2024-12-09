@@ -1,6 +1,6 @@
 import create, push, os
 
-
+os.system('clear')
 def interface():
     stop = True
     while stop:
@@ -12,9 +12,13 @@ def interface():
                 "| # | Option            |\n"
                 "+---+-------------------+\n"
                 "| 1 | TEXT TO SQL       |\n"
+                "+---+-------------------+\n"
                 "| 2 | TEXT TO MCD       |\n"
-                "| 3 | MCD TO SQL Table  |\n"
-                "| 4 | EXEC              |\n"
+                "+---+-------------------+\n"
+                "| 3 | MCD TO SQL        |\n"
+                "+---+-------------------+\n"
+                "| 4 | RUN FILES         |\n"
+                "+---+-------------------+\n"
                 "| 5 | STOP              |\n"
                 "+---+-------------------+")
             IN = int(input("votre réponse : "))
@@ -52,14 +56,17 @@ def execution():
     while not (0 < IN < 5):
         print("\nQue voulez vous faire : ")
         print(
-            "+---+----------------+\n"
-            "| # | Option         |\n"
-            "+---+----------------+\n"
-            "| 1 | Exec SQL       |\n"
-            "| 2 | Exec MCD       |\n"
-            "| 3 | Print Table    |\n"
-            "| 4 | BACK           |\n"
-            "+---+----------------+")
+            "+---+---------------+\n"
+            "| # | Option        |\n"
+            "+---+---------------+\n"
+            "| 1 | RUN SQL       |\n"
+            "+---+---------------+\n"
+            "| 2 | RUN MCD       |\n"
+            "+---+---------------+\n"
+            "| 3 | VIEW TABLE    |\n"
+            "+---+---------------+\n"
+            "| 4 | LOOK BACK     |\n"
+            "+---+---------------+")
         IN = int(input("votre réponse : "))
         os.system('clear')
     match IN:
