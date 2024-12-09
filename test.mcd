@@ -1,0 +1,7 @@
+Utilisateur : user_id, name, email
+Produit : product_id, name, price
+Commande : order_id, user_id, order_date
+DétailCommande : order_detail_id, order_id, product_id, quantity
+Passer, Utilisateur, Commande
+Contenir, Commande, DétailCommande
+Inclure, Produit, DétailCommande
