@@ -8,11 +8,17 @@
 - une table SQL à partir d'un fichier .csv
 ## Utilisation 
 
-`$ git clone https://github.com/Mel0101010/Generateur_SQL.git`
+```bash
+$ git clone https://github.com/Mel0101010/Generateur_SQL.git
+```
 
-`$ cd Generateur_SQL`
+```bash
+$ cd Generateur_SQL
+```
 
-`$ python main.py`
+```bash
+$ python main.py
+```
 
 choisissez alors ce que vous voulez faire en utilisant le menu devant vous
 
