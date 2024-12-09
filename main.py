@@ -5,7 +5,7 @@ def interface():
     stop = True
     while stop:
         IN = -1
-        while not (0 < IN < 6):
+        while not (0 < IN < 7):
             print("\nQue voulez vous faire : ")
             print(
                 "+---+-------------------+\n"
@@ -17,9 +17,11 @@ def interface():
                 "+---+-------------------+\n"
                 "| 3 | MCD TO SQL        |\n"
                 "+---+-------------------+\n"
-                "| 4 | RUN FILES         |\n"
+                "| 4 | CSV TO SQL        |\n"
                 "+---+-------------------+\n"
-                "| 5 | STOP              |\n"
+                "| 5 | RUN FILES         |\n"
+                "+---+-------------------+\n"
+                "| 6 | STOP              |\n"
                 "+---+-------------------+")
             IN = int(input("votre réponse : "))
             os.system('clear')
@@ -46,8 +48,14 @@ def interface():
                 choice = create.textinput(filename)
                 choice.mcd_to_sql()
             case 4:
-                execution()
+                filename=input("\nNom du fichier : ")
+                if filename == "":
+                    filename = "main"
+                choice = create.textinput(filename)
+                choice.csv_to_sql()
             case 5:
+                execution()
+            case 6:
                 stop=False
 
 

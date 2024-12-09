@@ -1,0 +1,6 @@
+table_name
+id, name, age
+1, John, 25
+2, Jane, 30
+3, , 22
+4, Alice, 27
