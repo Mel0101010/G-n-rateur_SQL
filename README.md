@@ -4,8 +4,8 @@
 -  des tables SQL  à la main
 - un MCD à la main
 - des tables SQL à partir d'un mcd 
-- un mcd à partir d'un code SQL 
 - une table SQL à partir d'un fichier .csv
+- ainsi que pour afficher les tables créées
 ## Installation 
 
 ```bash
