@@ -1,4 +1,4 @@
-import os
+import os, csv
 
 
 class textinput():
@@ -42,7 +42,7 @@ class textinput():
             tables[table_name] = {"columns": columns, "rows": rows}
 
         # Affichage du contenu des tables en SQL
-        f = open(self.filename+".sql", "a")
+        f = open('./filescreated/'+self.filename+".sql", "a")
         print("\n=== Instructions SQL ===")
         for table_name, table_data in tables.items():
             # Génération de la commande CREATE TABLE
@@ -96,7 +96,7 @@ class textinput():
                 dico_link[link].append(related_table)  # Ajout de la table à la liste associée au lien
 
         print("\nDictionnaire des liens :")
-        f = open(self.filename+".mcd", "a")
+        f = open('./filescreated/'+self.filename+".mcd", "a")
         #Affichage des Tables et des éléments associés
         for tables, emt in dico_table.items():
             table_str=", ".join(emt)
@@ -110,6 +110,53 @@ class textinput():
             f.write(f"{link}, {liens_str}\n")
         f.close()
 
-    def mcd_to_sql(self):
-        os.system('mocodo -i '+self.filename+' -t sqlite\n') # Créer un fichier avec ddl dans le nom
 
+    def mcd_to_sql(self):
+        os.system('mocodo -i '+self.filename+' -t sqlite --output_dir ./filescreated\n') # Créer un fichier avec ddl dans le nom
+
+
+
+    def csv_to_sql(self):
+        nom, extension=os.path.splitext(self.filename)
+
+        if extension.lower()==".csv":
+            pass
+        else:
+            self.filename=self.filename+".csv"
+
+        try:
+            with open(self.filename, mode='r', encoding='utf-8') as file:
+                reader = csv.reader(file)
+                rows = list(reader)  # Permet de lire toutes les lignes dans une liste
+                
+                if len(rows) < 2:
+                    print("Error: CSV file must have at least two rows (table name and columns).")
+                    return
+                
+                # Permet d'extraire le nom de la table et les noms des colonnes
+                table_name = rows[0][0].strip()
+                column_names = ", ".join([col.strip() for col in rows[1]])
+
+
+
+                # Initialise un fichier avec le nom du csv avec _sql.sql pour le différentier
+                fileoutname=nom+"_sql.sql"
+                # Permet d'ouvrir le fichier SQL de sortie
+                with open('./filescreated/'+fileoutname, "w", encoding="utf-8") as sql_file:
+                    # Rédige l'instruction CREATE TABLE
+                    sql_file.write(f"CREATE TABLE {table_name} ({column_names});\n")
+                    
+                    # Rédige des instructions INSERT pour chaque ligne de données
+                    for row in rows[2:]:
+                        # Passe les guillemets simples dans les chaînes de caractères et gérer les valeurs nulles
+                        values = ", ".join(
+                            [f"'{val.strip().replace('\'', '\'\'')}'" if val.strip() else "NULL" for val in row]
+                        )
+                        sql_file.write(f"INSERT INTO {table_name} VALUES ({values});\n")
+                
+                print(f"SQL file {fileoutname} successfully created.")
+
+        except FileNotFoundError:
+            print(f"Error: The file '{self.filename}' was not found.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
