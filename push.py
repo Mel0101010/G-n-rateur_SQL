@@ -129,6 +129,4 @@ class exect():
 
 
     def exec_mcd(self):
-        os.system("mocodo --input "+self.filename)
-        os.system("rm "+self.filename+"_geo.json") #rajouter -f en cas de fichier toujours présent dans la corbeille
-
+        os.system("mocodo --input "+self.filename+" -t arrange --output_dir ./filescreated")
