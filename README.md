@@ -43,7 +43,9 @@ sudo pacman -S sqlite python3-pip
 ### Dépendences
 
 Python -> 3.10
+
 SQLite -> 3.0
+
 Mocodo -> 3.0
 
 ###  CSV -> SQL
