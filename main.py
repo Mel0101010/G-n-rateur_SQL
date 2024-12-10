@@ -2,8 +2,7 @@ import create, push, os
 
 os.system('clear')
 def interface():
-    stop = True
-    while stop:
+    while True:
         IN = -1
         while not (0 < IN < 7):
             print("\nQue voulez vous faire : ")
@@ -57,8 +56,8 @@ def interface():
                 choice.csv_to_sql()
             case 5:
                 execution()
-            case 6:
-                stop=False
+            case _:
+                return
 
 
 def execution():
