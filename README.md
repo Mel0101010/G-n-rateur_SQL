@@ -17,7 +17,8 @@ $ cd Generateur_SQL
 ```
 
 ```bash
-$ python main.py
+$ chmod +x launch.sh
+$ sh launch.sh
 ```
 
 choisissez alors ce que vous voulez faire en utilisant le menu devant vous
@@ -28,14 +29,12 @@ Debian-based
 ```bash
 sudo apt update
 sudo apt install sqlite3 python3-pip
-pip install mocodo
 ```
 
 arch-based
 ```bash
 sudo pacman -Syu
 sudo pacman -S sqlite python3-pip
-pip install mocodo
 ```
 
 
